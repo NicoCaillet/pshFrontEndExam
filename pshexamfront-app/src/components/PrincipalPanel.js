@@ -361,20 +361,7 @@ const [message, setMessage] = useState({
 console.log(message)
 const handleSubmit = (id) => {
     if(message.message !== ""){
-        // switch (id) {
-        //     case 1:
-        //         break;
-        //         case 2:
-        //             setChatMessages2([...chatMessages2, message])
-        //             break;
-        //             case 3:
-        //                 setChatMessages3([...chatMessages3, message])
-        //                 break;
-        //     default:
-        //         break;
-        // }
           setChatMessages([...chatMessages, message])
-
     }
 }
 
@@ -406,8 +393,13 @@ const renderChatFunction = (item) => {
     }
 }
 
+const lastPosition = chatMessages.length-1
+console.log("lastposition", chatMessages.length > 0 && chatMessages[lastPosition].message)
+
+
   useEffect(() => {
    console.log(chatMessages)
+
   }, [message])
 
   const horarioActual = moment().format(' h:mm a')
@@ -430,7 +422,7 @@ const renderChatFunction = (item) => {
                                 </Grid>
                                 <Grid  className={classes.divContactName}> 
                                     <Typography className={classes.nameContact}> {item.name}</Typography>
-                                    <Typography className={classes.lastmessage}> {item.lastMessage} </Typography>
+                                    <Typography className={classes.lastmessage}> {chatMessages.length > 0 && chatMessages[lastPosition].message} </Typography>
  
                                 </Grid>
                                 <Grid  className={classes.divContactHour}> 
