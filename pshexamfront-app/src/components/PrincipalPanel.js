@@ -1,15 +1,12 @@
-import { Grid, Typography, makeStyles, Input, FormControl, Button } from "@material-ui/core";
-import React, {useEffect, useState} from "react";
-import pshLogo from "../assets/img/PSh Logo_WHITE.svg"
-import imgcontact1 from "../assets/img/avatar-1.png"
-import imgcontact2 from "../assets/img/avatar-2.png"
-import imgcontact3 from "../assets/img/avatar-3.png"
+import { Grid, Typography, makeStyles } from "@material-ui/core";
+import React, { useState, useEffect} from "react";
+import pshLogo from "../assets/img/psh_brand.png"
+import {contacts} from '../data/contacts'
 import "./index.css"
-import { MessageBox } from 'react-chat-elements'
 import 'react-chat-elements/dist/main.css';
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import AddIcon from '@material-ui/icons/Add';
-import moment from 'moment'
+import ChatBoxComponent from './chatBox'
+import ChatContact from './chatContact'
 
 const useStyles = makeStyles((theme) => ({
     padre: {
@@ -37,10 +34,11 @@ const useStyles = makeStyles((theme) => ({
         display: "flex"
     },
     imgPsh : {
-        width: "70px",
-        height: "70px",
+        width: "90px",
+        height: "80px",
         marginLeft: "18px",
-        padding: "20px"
+        padding: "20px",
+        borderRadius: '33px'
 
     },
     reactApp: {
@@ -144,7 +142,8 @@ const useStyles = makeStyles((theme) => ({
         height: "110px",
         display: "flex",
         borderBottom: "1px solid white",
-        cursor: "pointer"
+        cursor: "pointer",
+        justifyContent: 'space-between'
 
     },
     nameContact: {
@@ -217,157 +216,27 @@ const useStyles = makeStyles((theme) => ({
 
 function PrincipalPanel() {
 
-    const contacts = [
-        {
-            name: "Luciana Gutierrez",
-            img: imgcontact2,
-            job: "Marketing Leader",
-            lastMessage: "Si tengo alguna otra novedad te comento.Gracias!",
-            lastMessageHour: "10:20 AM",
-            isActive: true,
-            id: 1
-        },
-        {
-            name: "Micaela Alvarez",
-            img: imgcontact1,
-            job: "Marketing Manager",
-            lastMessage: "Dale, agende la meeting para hoy a las 14hs. Abrazo",
-            lastMessageHour: "10:15 AM",
-            isActive: true,
-            id: 2
-        },
-        {
-            name: "Manuel Hoffmann",
-            img: imgcontact3,
-            job: "CEO",
-            lastMessage: "Gracias a vos! Nos vemos en la proxima! Saludos",
-            lastMessageHour: "9:37 AM",
-            isActive: true,
-            id: 3
-        },
-        {
-            name: "Nicolas Caillet-Bois",
-            job: "CTO",
-            img: imgcontact3,
-            lastMessage: "No hay problema!",
-            lastMessageHour: "9:13 AM",
-            isActive: false,
-            id: 4
-        },
-    
-    ]
-const renderIndividualChat = (object) => {
-const id = object.id
-
-    return (
-    <Grid className={classes.chat}> 
-                <Grid className={classes.contactTitle}> 
-                    <Grid className={classes.infoIndividualchat}> 
-                        <img src={object.img} alt="contactImage" className={classes.imgContactChat}/>
-                        <Grid className={classes.divnombreChat} > 
-                            <Typography className={classes.nombreChat}> {object.name}</Typography>
-                            <Typography className={classes.puesto}> {object.job}</Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid className={classes.chatInputs}> 
-                        <Grid className={classes.containerMessage}>
-                            {/* {moment().format(' h:mm a')} */}
-                            <Grid >
-                                <Typography className={classes.hora}> 15:00 PM</Typography>
-                            </Grid>
-                            <MessageBox
-                                className={classes.messageBoxStyles}
-                                position={'left'}
-                                type={'text'}
-                                text={object.lastMessage}
-                                />
-                        </Grid>
-
-                        <Grid className={classes.containerMessage}>
-                            <Grid className={classes.divHora}>
-                                <Typography className={classes.hora}> 15:00 PM</Typography>
-                            </Grid>
-                            <MessageBox
-                                className={classes.messageBoxStyles}
-                                position={'left'}
-                                type={'text'}
-                                text={object.lastMessage}
-                                />
-                        </Grid>
-
-                        {chatMessages.map(item => {
-                            return (
-                                <Grid className={classes.containerMessage}>
-                                <Grid >
-                                    <Typography className={classes.hora}> {horarioActual} </Typography>
-                                    </Grid>
-                                    <MessageBox
-                                        className={classes.messageBoxStyles}
-                                        position={'right'}
-                                        type={'text'}
-                                        text={item.message}
-                                        />
-                                </Grid>
-                            )
-                        })}                        
-                    </Grid>
-                    <Grid className={classes.divInput}>
-                            <FormControl onSubmit={handleSubmit} className={classes.createMessage}>
-                                <Grid className={classes.createMessage}> 
-                                    <input
-                                        placeholder="Type your message..."
-                                        className={classes.inputAlone}
-                                        margin="normal"
-                                        color="secondary"
-                                        required
-                                        fullWidth
-                                        autoFocus
-                                        onChange={handleInputChange}
-                                        value={message.message}
-                                    />
-                                    
-                                    <Button
-                                        className={classes.buttonStyles}
-                                        variant="contained"
-                                        type="submit"
-                                        
-                                        onClick={handleSubmit}
-                                    >
-                                    Send
-                                    </Button>
-                                </Grid>                               
-                            </FormControl >
-                        </Grid>
-                </Grid>
-                
-            </Grid>
-)
-}
-
-const classes = useStyles();
-
 const [contact1, setContact1] = useState(true)
 const [contact2, setContact2] = useState(false)
 const [contact3, setContact3] = useState(false)
+const classes = useStyles();
 
-const [chatMessages2, setChatMessages2] = useState([])
-const [chatMessages, setChatMessages] = useState([])
-const [chatMessages3, setChatMessages3] = useState([])
-
-const [message, setMessage] = useState({
-    message: ""
-})
-
-console.log(message)
-const handleSubmit = (id) => {
-    if(message.message !== ""){
-          setChatMessages([...chatMessages, message])
-    }
+const renderIndividualChat = (object) => {
+    return (
+    <Grid className={classes.chat}> 
+        <ChatBoxComponent object={object}/>       
+    </Grid>
+)
 }
 
-const handleInputChange = (e) => {
-    setMessage({ ...message, message: e.target.value });
-  };
+const getItemLastMessage = (index) => {
+    console.log(JSON.parse(localStorage.getItem(`${contacts[0].name}`)))
+    const localStorageState = JSON.parse(localStorage.getItem(`${contacts[0].name}`)) 
+    const lastPosition = localStorageState.length-1
+    return localStorageState[lastPosition].message
+}
+
+console.log("funcion de nico", getItemLastMessage())
 
 const renderChatFunction = (item) => {
     switch (item.name) {
@@ -393,17 +262,6 @@ const renderChatFunction = (item) => {
     }
 }
 
-const lastPosition = chatMessages.length-1
-console.log("lastposition", chatMessages.length > 0 && chatMessages[lastPosition].message)
-
-
-  useEffect(() => {
-   console.log(chatMessages)
-
-  }, [message])
-
-  const horarioActual = moment().format(' h:mm a')
-
   return (
     <Grid className={classes.padre}>
         <Grid className={classes.container}> 
@@ -413,7 +271,7 @@ console.log("lastposition", chatMessages.length > 0 && chatMessages[lastPosition
                     <Typography className={classes.reactApp}> React Chat</Typography>             
                 </Grid> 
                 <Grid className={classes.divBlack}>
-                    {contacts.map(item => {
+                    {contacts.map((item, index) => {
                         if(item.isActive){
                             return (
                             <Grid className={classes.contactDetail} onClick={() => renderChatFunction(item)}>
@@ -422,13 +280,18 @@ console.log("lastposition", chatMessages.length > 0 && chatMessages[lastPosition
                                 </Grid>
                                 <Grid  className={classes.divContactName}> 
                                     <Typography className={classes.nameContact}> {item.name}</Typography>
-                                    <Typography className={classes.lastmessage}> {chatMessages.length > 0 && chatMessages[lastPosition].message} </Typography>
+                                    <Typography className={classes.lastmessage}> {JSON.parse(localStorage.getItem(`${contacts[index].name}`)).pop().message}  </Typography>
  
                                 </Grid>
                                 <Grid  className={classes.divContactHour}> 
                                     <Typography className={classes.lastmessageHour}> {item.lastMessageHour} </Typography>
                                 </Grid> 
                             </Grid>
+                            )
+                        } else {
+                            return (
+                                <Grid> 
+                                </Grid>
                             )
                         }
                         
