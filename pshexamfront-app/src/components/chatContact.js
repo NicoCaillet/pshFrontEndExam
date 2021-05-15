@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import 'react-chat-elements/dist/main.css';
 import { Grid, Typography, makeStyles } from "@material-ui/core";
 
@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: "1px solid white",
         cursor: "pointer"
 
+        
     },
     nameContact: {
         color: "white",

@@ -164,15 +164,16 @@ const useStyles = makeStyles((theme) => ({
 
   }));
 
-const ChatBox = ({object}) => {
+const ChatBox = ({object, arrayMessages}) => {
 
 
 const classes = useStyles()
-const [chatMessages, setChatMessages] = useState(JSON.parse(localStorage.getItem(`${object.name}`)) || [])
+const [chatMessages, setChatMessages] = useState(arrayMessages)
 const [message, setMessage] = useState({
     message: ""
 })
 
+console.log('Individual chat', chatMessages)
 
 const handleInputChange = (e) => {
     setMessage({ ...message, message: e.target.value });
@@ -195,6 +196,7 @@ const handleInputChange = (e) => {
 }
 const horarioActual = moment().format(' h:mm a')
 
+// console.log(chatMessages)
 
     return( 
         <Grid className={classes.contactTitle}> 

@@ -5,6 +5,7 @@ import imgcontact3 from "../assets/img/avatar-3.png"
 export const contacts = [
     {
         name: "Luciana Gutierrez",
+        id: 0,
         img: imgcontact2,
         job: "Marketing Leader",
         lastMessage: "Si tengo alguna otra novedad te comento.Gracias!",
@@ -14,6 +15,7 @@ export const contacts = [
     },
     {
         name: "Micaela Alvarez",
+        id: 1,
         img: imgcontact1,
         job: "Marketing Manager",
         lastMessage: "Dale, agende la meeting para hoy a las 14hs. Abrazo",
@@ -23,6 +25,7 @@ export const contacts = [
     },
     {
         name: "Manuel Hoffmann",
+        id: 2,
         img: imgcontact3,
         job: "CEO",
         lastMessage: "Gracias a vos! Nos vemos en la proxima! Saludos",
@@ -30,14 +33,15 @@ export const contacts = [
         isActive: true,
         id: 3
     },
-    // {
-    //     name: "Nicolas Caillet-Bois",
-    //     job: "CTO",
-    //     img: imgcontact3,
-    //     lastMessage: "No hay problema!",
-    //     lastMessageHour: "9:13 AM",
-    //     isActive: false,
-    //     id: 4
-    // },
+    {
+        name: "Nicolas Caillet-Bois",
+        id: 3,
+        job: "CTO",
+        img: imgcontact3,
+        lastMessage: "No hay problema!",
+        lastMessageHour: "9:13 AM",
+        isActive: false,
+        id: 4
+    },
 
 ]

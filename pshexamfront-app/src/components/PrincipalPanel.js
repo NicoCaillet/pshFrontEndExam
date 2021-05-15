@@ -1,17 +1,17 @@
 import { Grid, Typography, makeStyles } from "@material-ui/core";
-import React, { useState, useEffect} from "react";
-import pshLogo from "../assets/img/psh_brand.png"
+import React, { useState} from "react";
+import logo from "../assets/img/user.jpg"
 import {contacts} from '../data/contacts'
 import "./index.css"
 import 'react-chat-elements/dist/main.css';
-import AddIcon from '@material-ui/icons/Add';
 import ChatBoxComponent from './chatBox'
-import ChatContact from './chatContact'
+import NoChatMainPage from './noMessageView'
 
 const useStyles = makeStyles((theme) => ({
     padre: {
         width: "100%",
         height: "100%",
+        borderRadius: '14px'
     }, 
     body: {
         backgroundColor: "ligth-gray"
@@ -30,16 +30,17 @@ const useStyles = makeStyles((theme) => ({
         width: "70%",
     }, 
     logoDiv: {
-        backgroundImage: "linear-gradient(to bottom right, #AF0F0F , #FF622F)",
+        backgroundColor: 'darkslategray',
         display: "flex"
     },
     imgPsh : {
-        width: "90px",
-        height: "80px",
-        marginLeft: "18px",
-        padding: "20px",
-        borderRadius: '33px'
-
+        width: '82px',
+        height: '74px',
+        marginLeft: '18px',
+        borderRadius: '59px',
+        padding: '20px',
+        paddingLeft: '-22px',
+        marginLeft: '-12px',
     },
     reactApp: {
         display: "inline-flex",
@@ -152,16 +153,19 @@ const useStyles = makeStyles((theme) => ({
 
     },
     imgContact : {
-        width: "55px",
-        height: "56px",
-        borderRadius: "50%",
-        marginTop: "13px"
+        width: '65px',
+        height: '62px',
+        marginTop: '21px',
+        borderRadius: '50%',
     },
     lastmessage : {
         color: "lightgray",
         fontFamily: "Montserrat",
         textAlign: "left",
-        fontSize: "13px",        
+        fontSize: "13px",     
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'   
     },
     lastmessageHour: {
         color: "lightgray",
@@ -175,7 +179,9 @@ const useStyles = makeStyles((theme) => ({
     },
     divContactName: {
         marginTop: "10px",
-        marginLeft: "5px"
+        marginLeft: "5px",
+        width: '133px'
+
     },
     divContactHour: {
         display: "inline-flex",
@@ -216,50 +222,40 @@ const useStyles = makeStyles((theme) => ({
 
 function PrincipalPanel() {
 
-const [contact1, setContact1] = useState(true)
-const [contact2, setContact2] = useState(false)
-const [contact3, setContact3] = useState(false)
+
+const [currentChat, setCurrentChat] = useState()
 const classes = useStyles();
 
 const renderIndividualChat = (object) => {
+    const messages = JSON.parse(localStorage.getItem(`${object.name}`)) || []
+
+    console.log("principal panel",messages)
+
     return (
     <Grid className={classes.chat}> 
-        <ChatBoxComponent object={object}/>       
+        <ChatBoxComponent object={object} arrayMessages={messages}/>       
     </Grid>
-)
+)}
+
+const renderNoChatMainPage = () => {
+    return (
+        <Grid className={classes.chat}> 
+            <NoChatMainPage />        
+        </Grid>
+    )
 }
 
-const getItemLastMessage = (index) => {
-    console.log(JSON.parse(localStorage.getItem(`${contacts[0].name}`)))
-    const localStorageState = JSON.parse(localStorage.getItem(`${contacts[0].name}`)) 
-    const lastPosition = localStorageState.length-1
-    return localStorageState[lastPosition].message
-}
+// const getItemLastMessage = (index) => {
+//     console.log(JSON.parse(localStorage.getItem(`${contacts[0].name}`)))
+//     const localStorageState = JSON.parse(localStorage.getItem(`${contacts[0].name}`)) 
+//     const lastPosition = localStorageState.length-1
+//     return localStorageState[lastPosition].message
+// }
 
-console.log("funcion de nico", getItemLastMessage())
+// console.log("funcion de nico", getItemLastMessage())
 
-const renderChatFunction = (item) => {
-    switch (item.name) {
-        case "Luciana Gutierrez":
-            setContact1(true)
-            setContact2(false)
-            setContact3(false)
-            break;
-
-        case "Micaela Alvarez":
-            setContact1(false)
-            setContact2(true)
-            setContact3(false)
-            break;
-
-        case "Manuel Hoffmann":
-            setContact1(false)
-            setContact2(false)
-            setContact3(true)
-            break;
-        default:
-            break;
-    }
+const storageObjectState = (item) => {
+    setCurrentChat(item)
 }
 
   return (
@@ -267,20 +263,20 @@ const renderChatFunction = (item) => {
         <Grid className={classes.container}> 
             <Grid className={classes.contactos}>
                 <Grid className={classes.logoDiv}> 
-                    <img src={pshLogo} alt="psh react exam" className={classes.imgPsh}/>
+                    <img src={logo} alt="psh react exam" className={classes.imgPsh}/>
                     <Typography className={classes.reactApp}> React Chat</Typography>             
                 </Grid> 
                 <Grid className={classes.divBlack}>
                     {contacts.map((item, index) => {
                         if(item.isActive){
                             return (
-                            <Grid className={classes.contactDetail} onClick={() => renderChatFunction(item)}>
+                            <Grid className={classes.contactDetail} onClick={() => setCurrentChat(item)}>
                                 <Grid className={classes.divContactImg}> 
                                     <img src={item.img} alt={item.name} className={classes.imgContact}/>
                                 </Grid>
                                 <Grid  className={classes.divContactName}> 
                                     <Typography className={classes.nameContact}> {item.name}</Typography>
-                                    <Typography className={classes.lastmessage}> {JSON.parse(localStorage.getItem(`${contacts[index].name}`)).pop().message}  </Typography>
+                                    <Typography className={classes.lastmessage}> {JSON.parse(localStorage.getItem(`${contacts[index].name}`)) && JSON.parse(localStorage.getItem(`${contacts[index].name}`)).pop().message}  </Typography>
  
                                 </Grid>
                                 <Grid  className={classes.divContactHour}> 
@@ -296,16 +292,14 @@ const renderChatFunction = (item) => {
                         }
                         
                     })}
-                    <Grid className={classes.createNew}>
+                    {/* <Grid className={classes.createNew}>
                         <AddIcon fontSize="large" color="disabled" className={classes.addIcon}/>
                         <Typography className={classes.createNewText}> Create New</Typography>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
                 
              </Grid>
-            {contact1 && renderIndividualChat(contacts[0])}
-            {contact2 && renderIndividualChat(contacts[1])}
-            {contact3 && renderIndividualChat(contacts[2])}
+            {currentChat ? renderIndividualChat(currentChat) : renderNoChatMainPage()}
         </Grid> 
     </Grid>
   );
